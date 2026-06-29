@@ -1,0 +1,38 @@
+# Python
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+
+# Data
+data/
+*.json
+*.jsonl
+*.csv
+*.tsv
+*.pkl
+*.pickle
+
+# Models and checkpoints
+models/
+checkpoints/
+outputs/
+runs/
+wandb/
+*.pt
+*.pth
+*.bin
+*.safetensors
+
+# Environment
+.env
+.venv/
+venv/
+
+# Archives
+*.zip
+
+# System
+.DS_Store
+
+# Personal notes
+docs/note.md
