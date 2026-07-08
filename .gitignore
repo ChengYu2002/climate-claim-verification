@@ -27,6 +27,9 @@ wandb/
 .venv/
 venv/
 
+# Cache / intermediate artifacts
+cache/
+
 # Archives
 *.zip
 
@@ -35,3 +38,4 @@ venv/
 
 # Personal notes
 docs/note.md
+docs/llm_note.md
