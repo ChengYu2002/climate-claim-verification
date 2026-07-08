@@ -49,12 +49,32 @@ Claim / 声明   (evidence corpus: 1.2M passages / 证据语料 120 万条)
 📊 Full ablation study (component ablation · 1127-config grid search · selection-strategy comparison) → [`results/ablation_results.md`](results/ablation_results.md)
 完整消融实验(组件消融 · 1127 配置网格搜索 · 选择策略对比)见 [`results/ablation_results.md`](results/ablation_results.md)
 
+## Extension: Encoder vs LLM Classifier / 扩展:Encoder 与 LLM 分类器对照
+
+To test whether a modern LLM beats the encoder classifier, all four methods were compared **on the same retrieved evidence** (Qwen2.5-1.5B for zero-shot / few-shot / LoRA).
+
+为验证大模型是否优于 encoder 分类器,在**相同检索证据**上对比了四种方法(Qwen2.5-1.5B 做 zero-shot / few-shot / LoRA)。
+
+| Classifier / 分类器 | Params / 参数 | Accuracy |
+|---------------------|--------------|----------|
+| **DeBERTa-v3 (fine-tuned)** | **0.14B** | **0.5649** |
+| Qwen zero-shot | 1.5B | 0.4740 |
+| Qwen few-shot (1/2/3) | 1.5B | 0.44–0.46 |
+| Qwen + LoRA (r=4) | 1.5B | 0.5260 |
+| Qwen + LoRA (r=8) | 1.5B | 0.4610 |
+
+**Finding / 结论:** For this **small-data, closed 4-way** task, the discriminative encoder wins — highest accuracy with ~1/10 the parameters and a healthy prediction distribution, while LoRA-tuned LLMs suffered **class collapse** (converged loss but predictions degenerated to the majority class). This is an architecture–task fit trade-off, **not** a claim that encoders beat LLMs in general.
+
+在**小数据、封闭四分类**任务上,判别式 encoder 胜出——用约 1/10 参数拿到最高准确率、预测分布健康;而 LoRA 微调的 LLM 出现**类别塌缩**(loss 收敛但预测退化成多数类)。这是"架构-任务匹配"的取舍,**并非**断言 encoder 普遍优于 LLM。
+
 ## Repository / 仓库结构
 
 ```
 notebooks/
   final_retrieve_classify.ipynb        # 完整端到端系统(提交用)
   Dual_TF-IDF_Score_Fusion_Gap.ipynb   # 检索超参搜索 / 消融实验
+  retrieve_export.ipynb                # 只做检索,导出证据供分类器复用
+  llm_classifier_comparison.ipynb      # Encoder vs LLM 对照(zero/few-shot/LoRA)
 results/
   baseline_results.md                  # 词面 baseline 探索
   ablation_results.md                  # 消融实验 & 网格搜索
@@ -64,7 +84,7 @@ data/README.md                         # 数据集说明(数据未包含在仓�
 
 ## Stack / 技术栈
 
-Python · PyTorch · HuggingFace Transformers · sentence-transformers · scikit-learn
+Python · PyTorch · HuggingFace Transformers · sentence-transformers · PEFT (LoRA) · scikit-learn
 
 ## Usage / 运行
 
